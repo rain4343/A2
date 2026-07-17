@@ -1,65 +1,67 @@
-# Staff Portal — Sharbazher Education Directorate
+# ئی-ڕێکار — E-Rekar Staff Portal
 
-A Kurdish-language staff management portal for the Sharbazher Education Directorate. Built as a pnpm monorepo with a React + Vite frontend, Express API backend, PostgreSQL database, and real-time chat via Socket.IO.
+Staff management portal for Sharbazher Education Directorate (بەڕێوەبەرایەتی پەروەردەی شارباژێر).
 
 ## Stack
 
-- **Frontend:** React 19 + Vite + Tailwind CSS + shadcn/ui (`artifacts/staff-portal`)
-- **Backend:** Express 5 + Socket.IO (`artifacts/api-server`)
-- **Database:** PostgreSQL via Drizzle ORM (`lib/db`)
-- **Auth:** Express session (bcrypt password hashing)
-- **Language:** Kurdish (Sorani, RTL)
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React + Vite (port 5000) |
+| Backend | Express 5 + Socket.IO (port 8080) |
+| Database | PostgreSQL via Drizzle ORM |
+| Auth | Session-based (express-session) |
 
 ## Running the project
 
-Both services start automatically via their configured workflows:
+Both services are managed by Replit workflows and start automatically.
 
-| Service | Workflow | Port |
-|---|---|---|
-| Staff Portal (frontend) | `artifacts/staff-portal: web` | 5000 |
-| API Server (backend) | `artifacts/api-server: API Server` | 8080 |
+| Workflow | Command |
+|----------|---------|
+| `artifacts/api-server: API Server` | `PORT=8080 pnpm --filter @workspace/api-server run dev` |
+| `artifacts/staff-portal: web` | `PORT=5000 pnpm --filter @workspace/staff-portal run dev` |
 
-To start manually:
+## Database setup (one-time)
+
+Replit's built-in PostgreSQL is used. `DATABASE_URL` is injected automatically.
+
 ```bash
-# Install deps (first time)
-pnpm install
+# Push schema
+pnpm --filter @workspace/db run push
 
-# Push DB schema
-cd lib/db && pnpm exec drizzle-kit push
-
-# Seed sample data
-cd scripts && pnpm run seed
-
-# Start frontend
-pnpm --filter @workspace/staff-portal run dev
-
-# Start backend
-pnpm --filter @workspace/api-server run dev
+# Seed default admin user (Ahmad / Plan123)
+pnpm --filter @workspace/scripts run seed
 ```
 
-## Default login credentials
+## Default login
 
-After seeding, use any of these accounts (password: `changeme123`):
+| Field | Value |
+|-------|-------|
+| Username | `Ahmad` |
+| Password | `Plan123` |
 
-| Username | Role |
-|---|---|
-| `aram.hassan` | Super Admin |
-| `karwan.jamal` | Super Admin |
-| `sara.karim` | فەرمانبەر (Staff) |
+## Creating additional users
 
-## Environment variables
+```bash
+pnpm --filter @workspace/scripts run create-user <username> <password> [full_name]
+```
 
-- `SESSION_SECRET` — required for Express session (already configured as a secret)
-- `DATABASE_URL` — provided automatically by Replit's built-in PostgreSQL
+## Project structure
 
-## Features
-
-- Staff management (CRUD, profile photos, signatures)
-- Departments and roles
-- Document tracking with file uploads
-- Real-time chat between staff
-- Kurdish UI (RTL)
+```
+artifacts/
+  api-server/     # Express 5 backend (port 8080)
+  staff-portal/   # React + Vite frontend (port 5000)
+lib/
+  db/             # Drizzle ORM schema + migrations
+  api-spec/       # OpenAPI spec + orval codegen
+  api-client-react/  # Generated React query hooks
+  api-zod/        # Zod validators from OpenAPI
+scripts/
+  src/
+    seed.ts       # Seed departments, roles, admin user
+    create-user.ts
+```
 
 ## User preferences
 
-(none yet)
+- Use Replit's built-in PostgreSQL database.

@@ -8,8 +8,8 @@
     "./schema": "./src/schema/index.ts"
   },
   "scripts": {
-  "push": "drizzle-kit push --config drizzle.config.ts"
-}
+    "push": "drizzle-kit push --config drizzle.config.ts"
+  },
   "dependencies": {
     "drizzle-orm": "catalog:",
     "drizzle-zod": "^0.8.3",
