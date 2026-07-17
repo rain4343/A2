@@ -1,0 +1,1 @@
+- [Single system-admin authorization pattern](system-admin-flag.md) — staff-portal restricts admin actions to one designated account via `users.is_system_admin`, not by role name.
