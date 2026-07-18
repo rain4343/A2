@@ -12,3 +12,4 @@ export * from "./notifications";
 export * from "./audit_logs";
 export * from "./permissions";
 export * from "./tags";
+export * from "./leaves";

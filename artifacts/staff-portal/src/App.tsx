@@ -20,6 +20,7 @@ import Profile from '@/pages/Profile';
 import Chat from '@/pages/Chat';
 import Login from '@/pages/Login';
 import Reports from '@/pages/Reports';
+import Leaves from '@/pages/Leaves';
 
 const queryClient = new QueryClient();
 
@@ -63,6 +64,7 @@ function ProtectedRouter() {
         <Route path="/documents/:id/edit" component={DocumentForm} />
         <Route path="/documents/:id" component={DocumentDetail} />
         <Route path="/reports" component={Reports} />
+        <Route path="/leaves" component={Leaves} />
         <Route path="/chat" component={Chat} />
         <Route path="/profile" component={Profile} />
         <Route component={NotFound} />

@@ -10,6 +10,7 @@ import documentsRouter from "./documents";
 import chatRouter from "./chat";
 import importRouter from "./import";
 import reportsRouter from "./reports";
+import leavesRouter from "./leaves";
 
 const router: IRouter = Router();
 
@@ -27,5 +28,6 @@ router.use(documentsRouter);
 router.use(chatRouter);
 router.use(importRouter);
 router.use(reportsRouter);
+router.use(leavesRouter);
 
 export default router;

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, Users, Building2, ShieldCheck, Menu, LogOut,
-  FileText, UserCircle, ChevronLeft, MessageCircle, BarChart3,
+  FileText, UserCircle, ChevronLeft, MessageCircle, BarChart3, AlarmClock,
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,8 @@ const navItems = [
   { icon: FileText, label: "نوسراوەکان", href: "/documents", accent: "text-amber-400", activeBg: "bg-amber-600" },
   { icon: Users, label: "فەرمانبەران", href: "/staff", accent: "text-blue-400", activeBg: "bg-blue-600" },
   { icon: Building2, label: "هۆبەکان", href: "/departments", accent: "text-emerald-400", activeBg: "bg-emerald-600" },
-  { icon: BarChart3, label: "ڕاپۆرتەکان", href: "/reports", accent: "text-indigo-400", activeBg: "bg-indigo-600" },
+  { icon: BarChart3,   label: "ڕاپۆرتەکان", href: "/reports", accent: "text-indigo-400",  activeBg: "bg-indigo-600" },
+  { icon: AlarmClock, label: "مۆڵەتەکان",  href: "/leaves",  accent: "text-emerald-400", activeBg: "bg-emerald-600" },
   { icon: MessageCircle, label: "چات", href: "/chat", accent: "text-sky-400", activeBg: "bg-sky-600" },
   { icon: UserCircle, label: "پڕۆفایلی من", href: "/profile", accent: "text-slate-300", activeBg: "bg-slate-600" },
 ];
