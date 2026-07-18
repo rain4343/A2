@@ -18,31 +18,6 @@ const ku: React.CSSProperties = { fontFamily: "'Noto Kufi Arabic', sans-serif" }
 
 const CHART_COLORS = ["#6366f1", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4"];
 
-// ── Kurdish date helpers ──────────────────────────────────────────
-const KU_DAYS = ["یەکشەممە", "دووشەممە", "سێشەممە", "چوارشەممە", "پێنجشەممە", "هەینی", "شەممە"];
-const KU_MONTHS = [
-  "کانوونی دووەم", "شوبات", "ئازار", "نیسان", "ئایار", "حوزەیران",
-  "تەممووز", "ئاب", "ئەیلوول", "تشرینی یەکەم", "تشرینی دووەم", "کانوونی یەکەم",
-];
-
-/** Kurdish year = Gregorian year + 700, rolls over after Nowruz (21 March) */
-function kuYear(d: Date): number {
-  return d.getFullYear() + 700;
-}
-
-/** Day-of-month as Eastern Arabic numerals */
-function toKuNum(n: number): string {
-  return String(n).replace(/\d/g, (c) => "٠١٢٣٤٥٦٧٨٩"[+c]);
-}
-
-function kuDate(d: Date) {
-  return {
-    day:   KU_DAYS[d.getDay()],
-    month: KU_MONTHS[d.getMonth()],
-    dayNum: toKuNum(d.getDate()),
-    year:  toKuNum(kuYear(d)),
-  };
-}
 
 function StatCard({
   label, sublabel, value, loading, icon: Icon, gradient, iconBg, iconColor,
@@ -134,36 +109,13 @@ export default function Dashboard() {
             <p className="text-blue-300 text-sm mt-1.5">داشبۆردی سەرەکی — دەرفەتی باشی هەیە!</p>
           </div>
 
-          <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl px-5 py-4 text-right min-w-[170px]">
-            {/* Label */}
-            <div className="flex items-center justify-end gap-1.5 text-blue-300 mb-3">
+          <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-4 py-3 text-right">
+            <div className="flex items-center gap-2 text-blue-200 mb-1">
               <CalendarDays className="h-3.5 w-3.5" />
-              <span className="text-[11px] font-medium tracking-wide">ئەمڕۆ</span>
+              <span className="text-[11px]">ئەمڕۆ</span>
             </div>
-
-            {/* Kurdish day name */}
-            <p className="text-white font-bold text-base leading-tight mb-0.5">
-              {kuDate(today).day}
-            </p>
-
-            {/* Kurdish date: day-number + month */}
-            <p className="text-blue-100 text-sm font-semibold mb-2">
-              {kuDate(today).dayNum} ی {kuDate(today).month}
-            </p>
-
-            {/* Divider */}
-            <div className="border-t border-white/15 my-2" />
-
-            {/* Kurdish year line */}
-            <div className="flex items-center justify-end gap-1.5">
-              <span className="text-blue-300 text-[11px]">ساڵی کوردی</span>
-              <span className="text-white font-bold text-sm tabular-nums">{kuDate(today).year}</span>
-            </div>
-
-            {/* Gregorian small */}
-            <p className="text-blue-400 text-[10px] mt-1 tabular-nums text-left">
-              {format(today, "d MMM yyyy")}
-            </p>
+            <p className="text-white font-semibold text-sm">{format(today, "EEEE")}</p>
+            <p className="text-blue-200 text-xs">{format(today, "d MMMM yyyy")}</p>
           </div>
         </div>
       </div>
