@@ -2,6 +2,7 @@ import { pgTable, serial, varchar, date, integer, timestamp, text } from "drizzl
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import { usersTable } from "./users";
+import { departmentsTable } from "./departments";
 
 export const documentsTable = pgTable("documents", {
   id: serial("id").primaryKey(),
@@ -10,7 +11,10 @@ export const documentsTable = pgTable("documents", {
   subject: varchar("subject", { length: 255 }).notNull(),
   creator_id: integer("creator_id").notNull().references(() => usersTable.id),
   current_status: varchar("current_status", { length: 50 }).notNull().default("نوێ"),
+  workflow_step: varchar("workflow_step", { length: 20 }).notNull().default("draft"),
   direction: varchar("direction", { length: 20 }).notNull().default("هاتوو"),
+  from_dept_id: integer("from_dept_id").references(() => departmentsTable.id, { onDelete: "set null" }),
+  to_dept_id: integer("to_dept_id").references(() => departmentsTable.id, { onDelete: "set null" }),
   file_path: varchar("file_path", { length: 500 }).notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),

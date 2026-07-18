@@ -1,23 +1,34 @@
 import React from "react";
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, Users, Building2, ShieldCheck, Menu, LogOut, FileText, UserCircle, ChevronLeft, MessageCircle } from "lucide-react";
+import {
+  LayoutDashboard, Users, Building2, ShieldCheck, Menu, LogOut,
+  FileText, UserCircle, ChevronLeft, MessageCircle,
+  FolderOpen, BarChart3, Shield, Search, Bell,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
+import { NotificationBell } from "@/components/NotificationBell";
 
 const ku: React.CSSProperties = { fontFamily: "'Noto Kufi Arabic', sans-serif" };
 
 const navItems = [
   { icon: LayoutDashboard, label: "داشبۆرد", href: "/", accent: "text-blue-400", activeBg: "bg-blue-600" },
+  { icon: FileText, label: "نوسراوەکان", href: "/documents", accent: "text-amber-400", activeBg: "bg-amber-600" },
+  { icon: FolderOpen, label: "پرونده‌کان", href: "/cases", accent: "text-orange-400", activeBg: "bg-orange-600" },
   { icon: Users, label: "فەرمانبەران", href: "/staff", accent: "text-blue-400", activeBg: "bg-blue-600" },
   { icon: Building2, label: "هۆبەکان", href: "/departments", accent: "text-emerald-400", activeBg: "bg-emerald-600" },
-  { icon: FileText, label: "نوسراوەکان", href: "/documents", accent: "text-amber-400", activeBg: "bg-amber-600" },
+  { icon: BarChart3, label: "ڕاپۆرتەکان", href: "/reports", accent: "text-indigo-400", activeBg: "bg-indigo-600" },
+  { icon: Search, label: "گەڕان", href: "/search", accent: "text-sky-400", activeBg: "bg-sky-600" },
+  { icon: Bell, label: "ئاگادارکردنەوەکان", href: "/notifications", accent: "text-amber-400", activeBg: "bg-amber-600" },
   { icon: MessageCircle, label: "چات", href: "/chat", accent: "text-sky-400", activeBg: "bg-sky-600" },
   { icon: UserCircle, label: "پڕۆفایلی من", href: "/profile", accent: "text-slate-300", activeBg: "bg-slate-600" },
 ];
 
-// Only the designated system administrator sees this — replaces the old "Roles" item.
-const adminNavItem = { icon: ShieldCheck, label: "بەڕێوەبەری سیستم", href: "/admin", accent: "text-violet-400", activeBg: "bg-violet-600" };
+const adminNavItems = [
+  { icon: ShieldCheck, label: "بەڕێوەبەری سیستەم", href: "/admin", accent: "text-violet-400", activeBg: "bg-violet-600" },
+  { icon: Shield, label: "تۆمارەکانی کردار", href: "/audit", accent: "text-rose-400", activeBg: "bg-rose-600" },
+];
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -26,6 +37,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   function initials(name: string) {
     return name.trim().split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
   }
+
+  const allNavItems = user?.is_system_admin ? [...navItems, ...adminNavItems] : navItems;
 
   const SidebarContent = () => (
     <div className="flex h-full flex-col" dir="rtl" style={{ background: "linear-gradient(180deg, #0f172a 0%, #1a2744 100%)" }}>
@@ -44,7 +57,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {(user?.is_system_admin ? [...navItems, adminNavItem] : navItems).map((item) => {
+        {allNavItems.map((item) => {
           const isActive = location === item.href || (item.href !== "/" && location.startsWith(item.href));
           return (
             <Link
@@ -72,10 +85,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
               {initials(user.full_name || user.username)}
             </div>
-            <div className="min-w-0" style={ku}>
+            <div className="min-w-0 flex-1" style={ku}>
               <p className="text-xs font-medium text-white truncate">{user.full_name || user.username}</p>
               <p className="text-[10px] text-slate-500 truncate">@{user.username}</p>
             </div>
+            <NotificationBell />
           </div>
         )}
         <button
@@ -113,7 +127,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <SidebarContent />
             </SheetContent>
           </Sheet>
-          <div className="font-bold text-white text-sm" style={ku}>ئی-ڕێکار</div>
+          <div className="font-bold text-white text-sm flex-1" style={ku}>ئی-ڕێکار</div>
+          <NotificationBell />
         </header>
 
         {/* Main Content */}

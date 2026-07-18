@@ -7,6 +7,7 @@ import {
   RefreshCw, Upload, Stamp, CheckCircle2, Clock,
   ArrowRightLeft, FileImage, FileType2, File, Tag, PenLine,
 } from "lucide-react";
+import { WorkflowPanel } from "@/components/WorkflowPanel";
 import {
   useGetDocument, getGetDocumentQueryKey,
   useListDocumentLogs, getListDocumentLogsQueryKey,
@@ -391,8 +392,15 @@ export default function DocumentDetail() {
           )}
         </div>
 
-        {/* ── Right column (1/3): timeline history ── */}
-        <div className="lg:col-span-1">
+        {/* ── Right column (1/3): workflow + timeline history ── */}
+        <div className="lg:col-span-1 space-y-5">
+          {/* Workflow stepper */}
+          <WorkflowPanel
+            docId={documentId}
+            currentStep={(document as any).workflow_step ?? "draft"}
+            onStepChanged={() => { refetchDoc(); refetchLogs(); }}
+          />
+
           <Card className="rounded-2xl shadow-sm border-border/70 h-full">
             <CardHeader className="pb-4">
               <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-2" style={ku}>

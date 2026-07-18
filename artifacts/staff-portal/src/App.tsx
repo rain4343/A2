@@ -19,6 +19,12 @@ import DocumentSign from '@/pages/DocumentSign';
 import Profile from '@/pages/Profile';
 import Chat from '@/pages/Chat';
 import Login from '@/pages/Login';
+import Cases from '@/pages/Cases';
+import CaseDetail from '@/pages/CaseDetail';
+import Reports from '@/pages/Reports';
+import AuditLog from '@/pages/AuditLog';
+import SearchPage from '@/pages/SearchPage';
+import NotificationsPage from '@/pages/NotificationsPage';
 
 const queryClient = new QueryClient();
 
@@ -61,6 +67,12 @@ function ProtectedRouter() {
         <Route path="/documents/:id/sign" component={DocumentSign} />
         <Route path="/documents/:id/edit" component={DocumentForm} />
         <Route path="/documents/:id" component={DocumentDetail} />
+        <Route path="/cases" component={Cases} />
+        <Route path="/cases/:id" component={CaseDetail} />
+        <Route path="/reports" component={Reports} />
+        <Route path="/audit" component={AuditLog} />
+        <Route path="/search" component={SearchPage} />
+        <Route path="/notifications" component={NotificationsPage} />
         <Route path="/chat" component={Chat} />
         <Route path="/profile" component={Profile} />
         <Route component={NotFound} />

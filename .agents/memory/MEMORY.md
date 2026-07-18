@@ -1,1 +1,2 @@
 - [Single system-admin authorization pattern](system-admin-flag.md) — staff-portal restricts admin actions to one designated account via `users.is_system_admin`, not by role name.
+- [New modules schema and API patterns](new-modules-schema.md) — 8 new DB tables (workflow, assignments, cases, deadlines, notifications, audit_logs, permissions, tags) plus 8 new route files; frontend uses direct `apiFetch` (lib/api.ts) instead of regenerating the OpenAPI client.

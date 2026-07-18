@@ -5,7 +5,9 @@ import {
   useGetRoleBreakdown, getGetRoleBreakdownQueryKey,
   useGetRecentStaff, getGetRecentStaffQueryKey,
 } from "@workspace/api-client-react";
-import { Users, Building2, Shield, ArrowLeft, CalendarDays, Activity } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { apiFetch } from "@/lib/api";
+import { Users, Building2, Shield, ArrowLeft, CalendarDays, Activity, FileText, CheckCircle2, Clock, AlertTriangle } from "lucide-react";
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip,
   ResponsiveContainer, Cell, PieChart, Pie, Legend,
@@ -84,6 +86,8 @@ export default function Dashboard() {
   const { data: deptBreakdown, isLoading: loadingDept } = useGetDepartmentBreakdown({ query: { queryKey: getGetDepartmentBreakdownQueryKey() } });
   const { data: roleBreakdown, isLoading: loadingRole } = useGetRoleBreakdown({ query: { queryKey: getGetRoleBreakdownQueryKey() } });
   const { data: recentStaff, isLoading: loadingRecent } = useGetRecentStaff({ query: { queryKey: getGetRecentStaffQueryKey() } });
+  const { data: docStats } = useQuery<any>({ queryKey: ["reports", "documents"], queryFn: () => apiFetch("/reports/documents") });
+  const { data: overdueList = [] } = useQuery<any[]>({ queryKey: ["reports", "overdue"], queryFn: () => apiFetch("/reports/overdue") });
 
   return (
     <div className="space-y-6" data-testid="page-dashboard" style={ku}>
@@ -117,6 +121,26 @@ export default function Dashboard() {
             <p className="text-blue-200 text-xs">{format(today, "d MMMM yyyy")}</p>
           </div>
         </div>
+      </div>
+
+      {/* ── Document KPI strip ── */}
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
+        {[
+          { label: "کۆی نوسراو", value: docStats?.total ?? 0, icon: FileText, color: "text-blue-600", bg: "bg-blue-500/10" },
+          { label: "تەواوبووەکان", value: docStats?.completed ?? 0, icon: CheckCircle2, color: "text-emerald-600", bg: "bg-emerald-500/10" },
+          { label: "چاوەڕوانەکان", value: docStats?.pending ?? 0, icon: Clock, color: "text-amber-600", bg: "bg-amber-500/10" },
+          { label: "دواخراوەکان", value: overdueList.length, icon: AlertTriangle, color: "text-rose-600", bg: "bg-rose-500/10" },
+        ].map(({ label, value, icon: Icon, color, bg }) => (
+          <div key={label} className="bg-card border rounded-xl p-4 flex items-center gap-3">
+            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${bg}`}>
+              <Icon className={`h-4 w-4 ${color}`} />
+            </div>
+            <div>
+              <p className="text-xl font-bold">{value}</p>
+              <p className="text-xs text-muted-foreground">{label}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* ── Stat Cards (3 cards, no super-admin) ── */}

@@ -1,13 +1,16 @@
 import { Server as SocketIOServer } from "socket.io";
-import { db } from "@workspace/db";
-import { chatMessagesTable } from "@workspace/db/schema";
+import { db, chatMessagesTable } from "@workspace/db";
 import { and, eq } from "drizzle-orm";
 import { logger } from "./lib/logger";
+import { setIo } from "./lib/notify";
 
 // userId -> socketId
 const onlineUsers = new Map<number, string>();
 
 export function setupSocketIO(io: SocketIOServer) {
+  // Make notify lib aware of the io instance for real-time pushes
+  setIo(io);
+
   io.on("connection", (socket) => {
     const session = (socket.request as any).session as {
       userId?: number;
@@ -20,6 +23,9 @@ export function setupSocketIO(io: SocketIOServer) {
       socket.disconnect();
       return;
     }
+
+    // Join a personal room so targeted notifications can be pushed
+    socket.join(`user:${userId}`);
 
     onlineUsers.set(userId, socket.id);
     io.emit("online_users", Array.from(onlineUsers.keys()));

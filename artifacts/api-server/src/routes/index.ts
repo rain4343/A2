@@ -9,6 +9,14 @@ import dashboardRouter from "./dashboard";
 import documentsRouter from "./documents";
 import chatRouter from "./chat";
 import importRouter from "./import";
+import workflowRouter from "./workflow";
+import casesRouter from "./cases";
+import deadlinesRouter from "./deadlines";
+import notificationsRouter from "./notifications";
+import auditLogsRouter from "./audit-logs";
+import reportsRouter from "./reports";
+import searchRouter from "./search";
+import permissionsRouter from "./permissions";
 
 const router: IRouter = Router();
 
@@ -25,5 +33,13 @@ router.use(dashboardRouter);
 router.use(documentsRouter);
 router.use(chatRouter);
 router.use(importRouter);
+router.use(workflowRouter);
+router.use(casesRouter);
+router.use(deadlinesRouter);
+router.use(notificationsRouter);
+router.use(auditLogsRouter);
+router.use(reportsRouter);
+router.use(searchRouter);
+router.use(permissionsRouter);
 
 export default router;
